@@ -1,6 +1,6 @@
-import Reminders from "./Reminders";
-import RemindersContainer from "./RemindersContainer";
-import EditReminderModal from "../EditReminderModal";
+import Reminders from "./Reminders.jsx";
+import RemindersContainer from "./RemindersContainer.jsx";
+import EditReminderModal from "../EditReminderModal/Index.jsx";
 export default function Reminder() {
   return (
     <RemindersContainer>

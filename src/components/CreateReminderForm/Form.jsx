@@ -1,5 +1,5 @@
 import React from "react";
-import { scaleIn } from "../../animations";
+import { scaleIn } from "../../animations.js";
 import { motion } from "framer-motion";
 
 export default function Form({ children, ...props }) {

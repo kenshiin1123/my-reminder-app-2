@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { scaleIn } from "../../animations";
+import { scaleIn } from "../../animations.js";
 export default function Container({ children }) {
   return (
     <motion.div

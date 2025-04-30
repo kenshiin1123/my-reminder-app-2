@@ -1,14 +1,14 @@
 import React, { useState } from "react";
 
 // Components
-import TopSection from "./Top Section";
-import MiddleSection from "./Middle Section/";
-import BottomSection from "./Bottom Section";
-import ReminderContainer from "./ReminderContainer";
-import ReminderOption from "./ReminderOption";
+import TopSection from "./Top Section/index";
+import MiddleSection from "./Middle Section/Index";
+import BottomSection from "./Bottom Section/index";
+import ReminderContainer from "./ReminderContainer.jsx";
+import ReminderOption from "./ReminderOption/Index.jsx";
 
 // Context
-import ReminderContext from "./ReminderContext";
+import ReminderContext from "./ReminderContext.jsx";
 
 function Reminder({ ...props }) {
   const reminder = { ...props };

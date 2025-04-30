@@ -1,14 +1,13 @@
 import { createPortal } from "react-dom";
 
-import Form from "./Form";
-import Container from "./Container";
-import Header from "./Header";
-import TitleAndDescription from "./TitleAndDescription";
-import DateAndTime from "./DateAndTime";
-import Buttons from "./Buttons";
-import formUtil from "../../utils/formUtil";
-import useReminder from "../../store/useReminder";
-import { useEffect } from "react";
+import Form from "./Form.jsx";
+import Container from "./Container.jsx";
+import Header from "./Header.jsx";
+import TitleAndDescription from "./TitleAndDescription.jsx";
+import DateAndTime from "./DateAndTime.jsx";
+import Buttons from "./Buttons.jsx";
+import formUtil from "../../utils/formUtil.js";
+import useReminder from "../../store/useReminder.js";
 import { toast } from "sonner";
 
 const Modal = function Modal() {

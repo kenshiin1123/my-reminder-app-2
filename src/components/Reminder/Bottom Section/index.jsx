@@ -1,10 +1,7 @@
 import { AnimatePresence, motion } from "framer-motion";
 import React, { useContext } from "react";
 import ReminderContext from "../ReminderContext";
-import {
-  calculateTimeLeft,
-  calculateTimeLeftWithSeconds,
-} from "../../../utils/calculateTimeLeft";
+import { calculateTimeLeft } from "../../../utils/calculateTimeLeft";
 import { useState } from "react";
 export default function BottomSection() {
   const { isActive, datetime } = useContext(ReminderContext);

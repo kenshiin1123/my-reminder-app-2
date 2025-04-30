@@ -1,10 +1,10 @@
-import Main from "./Main";
-import Form from "./Form";
-import Fieldset from "./Fieldset";
-import Section from "./Section";
-import Button from "./Button";
+import Main from "./Main.jsx";
+import Form from "./Form.jsx";
+import Fieldset from "./Fieldset.jsx";
+import Section from "./Section.jsx";
+import Button from "./Button.jsx";
 import { useRef, useEffect } from "react";
-import useReminder from "../../store/useReminder";
+import useReminder from "../../store/useReminder.js";
 import { format } from "date-fns";
 
 export default function CreateReminderForm() {

@@ -8,7 +8,7 @@ import {
   updateReminder,
 } from "../utils/reminder";
 
-const useReminder = create((set, get) => ({
+const useReminder = create((set) => ({
   reminders: getReminders(),
   selectedReminder: {
     title: "",

@@ -1,6 +1,6 @@
-import Section from "./Section";
-import Input from "./Input";
-import Label from "./Label";
+import Section from "./Section.jsx";
+import Input from "./Input.jsx";
+import Label from "./Label.jsx";
 
 export default function DateAndTime({ datetime }) {
   const date = datetime.split("T")[0];
