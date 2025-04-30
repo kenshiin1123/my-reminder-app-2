@@ -12,7 +12,7 @@ Check out the live version here: [Reminder App 2](https://my-reminder-app-2.verc
 - ⏳ **Live Countdown Timer**: Each reminder card shows a real-time countdown until the due date.
 - 🕒 **Current Time Display**: The current time is always visible to help you stay synced.
 - 📝 **Reminder Management**: Add, edit, complete, or delete reminders effortlessly.
-- 🔄 **Dynamic Sorting**: New reminders appear at the top; completed tasks shift to the bottom.
+- 🔄 **Dynamic Sorting**: New reminders appear at the top; completed tasks shift to the bottom (coming soon!).
 - 💾 **Persistent State**: All reminders are stored using `localStorage`, so nothing gets lost on refresh.
 - 🧠 **Global State Management**: State is efficiently managed with Zustand.
 - 🎨 **Smooth Animations**: Framer Motion delivers subtle animations for a polished UI.
