@@ -9,6 +9,7 @@ import Buttons from "./Buttons";
 import formUtil from "../../utils/formUtil";
 import useReminder from "../../store/useReminder";
 import { useEffect } from "react";
+import { toast } from "sonner";
 
 const Modal = function Modal() {
   const {
@@ -30,7 +31,7 @@ const Modal = function Modal() {
       const data = formUtil(e);
       const { title, description, date, time } = data;
       if (!title || !date || !time) {
-        console.log("Please input the required fields!");
+        toast.error("Please input the required fields!");
         return;
       }
       const updatedData = {

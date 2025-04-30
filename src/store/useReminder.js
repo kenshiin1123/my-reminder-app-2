@@ -1,3 +1,4 @@
+import { toast } from "sonner";
 import { create } from "zustand";
 import {
   getReminders,
@@ -35,24 +36,30 @@ const useReminder = create((set, get) => ({
     const data = createReminder(event);
     const { newReminder } = data;
     if (!newReminder) {
-      console.log("Please input the required fields!");
+      toast.error("Please input the required fields!");
       return;
     }
     console.log("New reminder created!", newReminder);
     set((state) => ({ reminders: [newReminder, ...state.reminders] }));
+    toast.success("Reminder has been created");
   },
   fetchReminders: async () => {
     const data = await getReminders();
     set({ reminders: data });
   },
   updateReminder: (newReminderData) => {
-    if (!newReminderData) return;
+    if (!newReminderData) {
+      return;
+    }
+
     updateReminder(newReminderData);
     set((state) => ({
       reminders: state.reminders.map((reminder) =>
         reminder.id === newReminderData.id ? newReminderData : reminder
       ),
     }));
+
+    toast.success("Reminder has been successfully updated.");
   },
   deleteReminder: (reminderID) => {
     deleteReminder(reminderID);
@@ -61,6 +68,7 @@ const useReminder = create((set, get) => ({
         (reminder) => reminder.id !== reminderID
       ),
     }));
+    toast.success("Reminder successfully deleted.");
   },
   toggleReminderCheckbox: (id) => {
     toggleReminder(id);
