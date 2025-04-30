@@ -25,9 +25,9 @@ export default function NavigationBar() {
         {...fadeInDown}
         className="bg-[#1b1919] flex flex-col gap-2 px-3 sticky top-0 z-10 justify-start max-sm:justify-center py-5"
       >
-        <h1 className=" text-white text-4xl max-sm:text-center mb-3 min-sm:indent-5">
+        {/* <h1 className=" text-white text-4xl max-sm:text-center mb-3 min-sm:indent-5">
           Reminders
-        </h1>
+        </h1> */}
         <div className="flex gap-2 w-full max-sm:justify-center">
           {PAGES.map((page) => {
             return (
