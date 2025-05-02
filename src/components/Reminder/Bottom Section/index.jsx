@@ -1,23 +1,23 @@
 import { AnimatePresence, motion } from "framer-motion";
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import ReminderContext from "../ReminderContext";
 import { calculateTimeLeft } from "../../../utils/calculateTimeLeft";
 import { useState } from "react";
 export default function BottomSection() {
   const { isActive, datetime } = useContext(ReminderContext);
-  const goalTime = new Date(datetime);
+  const goalTime = React.useMemo(() => new Date(datetime), [datetime]);
 
   const [calculatedTimeLeft, setCalculatedTimeLeft] = useState(
     calculateTimeLeft(goalTime)
   );
 
-  // setTimeout(() => {
-  //   setCalculatedTimeLeft(calculateTimeLeft(goalTime));
-  // }, 1000);
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCalculatedTimeLeft(calculateTimeLeft(goalTime));
+    }, 1000);
 
-  setInterval(() => {
-    setCalculatedTimeLeft(calculateTimeLeft(goalTime));
-  }, 1000);
+    return () => clearInterval(interval); // Cleanup on re-render or unmount
+  }, [goalTime]);
 
   return (
     <AnimatePresence>
