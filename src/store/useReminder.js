@@ -37,11 +37,12 @@ const useReminder = create((set) => ({
     const { newReminder } = data;
     if (!newReminder) {
       toast.error("Please input the required fields!");
-      return;
+      return { success: false };
     }
     console.log("New reminder created!", newReminder);
     set((state) => ({ reminders: [newReminder, ...state.reminders] }));
     toast.success("Reminder has been created");
+    return { success: true };
   },
   fetchReminders: async () => {
     const data = await getReminders();

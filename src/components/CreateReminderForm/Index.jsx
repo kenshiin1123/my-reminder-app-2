@@ -16,8 +16,10 @@ export default function CreateReminderForm() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    createReminder(e);
-    form.current.reset();
+    const { success } = createReminder(e);
+    if (success) {
+      form.current.reset();
+    }
   };
 
   useEffect(() => {
