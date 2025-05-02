@@ -5,7 +5,7 @@ export default function Button({ title }) {
     <motion.button
       whileTap={{ scale: 0.97 }}
       whileHover={{ scale: 0.95 }}
-      className="text-xl bg-white text-black py-1 px-2 rounded mt-auto select-none"
+      className="text-xl bg-green-500 text-white py-1 px-2 rounded mt-auto select-none"
       type="submit"
     >
       {title}

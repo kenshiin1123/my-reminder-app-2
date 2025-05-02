@@ -53,10 +53,11 @@ const Modal = function Modal() {
   return createPortal(
     <Container
       handleCloseDialog={handleCloseDialog}
+      toggleUpdateModal={toggleUpdateModal}
       showUpdateModal={showUpdateModal}
     >
       <Form
-        showUpdateModal={showUpdateModal}
+        toggleUpdateModal={toggleUpdateModal}
         handleFormSubmit={handleFormSubmit}
       >
         <Header />

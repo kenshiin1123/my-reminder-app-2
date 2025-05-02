@@ -1,11 +1,13 @@
 import React from "react";
 
-export default function Button({ handleClick, children, ...props }) {
+export default function Button({ type, handleClick, children }) {
   return (
     <button
-      {...props}
+      type={type}
       onClick={handleClick}
-      className="px-3 py-1 w-36 h-10 bg-white text-black rounded hover:scale-95 select-none"
+      className={`px-3 py-1 w-36 h-10 shadow-md hover:shadow-none text-white font-semibold rounded hover:scale-95 select-none ${
+        type === "submit" ? "bg-green-500" : "bg-red-500"
+      }`}
     >
       {children}
     </button>

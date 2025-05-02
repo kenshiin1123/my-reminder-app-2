@@ -6,7 +6,7 @@ export default function OptionButton() {
   const { toggleShowOption, id } = useContext(ReminderContext);
   return (
     <button
-      className="bg-white p-1 rounded text-2xl cursor-pointer hover:scale-95"
+      className="bg-white p-1 rounded text-2xl cursor-pointer"
       onClick={() => toggleShowOption(id)}
     >
       <SlOptions />

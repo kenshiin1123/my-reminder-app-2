@@ -9,7 +9,7 @@ export default function Fieldset({ title, type = "text", ref = null, name }) {
 
   return (
     <fieldset className={`flex flex-col ${isTimeDate && "w-[46%]"}`}>
-      <label htmlFor={title} className="text-white text-xl font-semibold mb-1">
+      <label htmlFor={title} className=" text-xl font-semibold mb-1">
         {uppercasedFirstLetter}
       </label>
       <input
@@ -17,7 +17,7 @@ export default function Fieldset({ title, type = "text", ref = null, name }) {
         type={type}
         name={name}
         id={title}
-        className="shadow-md bg-white rounded-md py-1 indent-4 text-md"
+        className="shadow-xs shadow-gray-500 bg-white rounded-md py-1 indent-4 text-md"
       />
     </fieldset>
   );

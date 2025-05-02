@@ -19,7 +19,7 @@ export default function Input({ id, type = "text", defaultValue, ref, name }) {
       id={id}
       className={`${
         type == "text" ? "w-[90%]" : "w-[80%]"
-      } bg-white rounded self-center h-10 text-black indent-3`}
+      } bg-white shadow-xs shadow-gray-500 rounded self-center h-10 text-black indent-3`}
     />
   );
 }
