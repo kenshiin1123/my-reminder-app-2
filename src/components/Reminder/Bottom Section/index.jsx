@@ -1,19 +1,19 @@
 import { AnimatePresence, motion } from "framer-motion";
 import React, { useContext, useEffect } from "react";
 import ReminderContext from "../ReminderContext";
-import { calculateTimeLeft } from "../../../utils/calculateTimeLeft";
+import calculateDateTime from "../../../utils/calculateDateTime";
 import { useState } from "react";
 export default function BottomSection() {
   const { isActive, datetime } = useContext(ReminderContext);
   const goalTime = React.useMemo(() => new Date(datetime), [datetime]);
 
   const [calculatedTimeLeft, setCalculatedTimeLeft] = useState(
-    calculateTimeLeft(goalTime)
+    calculateDateTime(goalTime)
   );
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setCalculatedTimeLeft(calculateTimeLeft(goalTime));
+      setCalculatedTimeLeft(calculateDateTime(goalTime));
     }, 1000);
 
     return () => clearInterval(interval); // Cleanup on re-render or unmount
