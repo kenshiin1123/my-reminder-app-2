@@ -8,14 +8,38 @@ import {
   updateReminder,
 } from "../utils/reminder";
 
-const useReminder = create((set) => ({
+const useReminder = create((set, get) => ({
+  showAlarm: false,
   reminders: getReminders(),
+  timeOutedReminder: [],
   selectedReminder: {
     title: "",
     description: "",
     datetime: "",
     isActive: false,
     id: "",
+  },
+  addTimeOutedReminder: (timeOutedReminder) => {
+    set((state) => ({
+      timeOutedReminder: [timeOutedReminder, ...state.timeOutedReminder],
+    }));
+  },
+  removeTimeOutedReminder: (id) => {
+    get().toggleReminderCheckbox(id);
+    set((state) => ({
+      timeOutedReminder: state.timeOutedReminder.filter(
+        (reminder) => reminder.id !== id
+      ),
+    }));
+    if (get().timeOutedReminder == 0) {
+      get().turnOffAlarm();
+    }
+  },
+  turnOnAlarm: () => {
+    set(() => ({ showAlarm: true }));
+  },
+  turnOffAlarm: () => {
+    set(() => ({ showAlarm: false }));
   },
   initializeReminders: () => {
     set(() => ({ reminders: getReminders() }));
@@ -52,7 +76,6 @@ const useReminder = create((set) => ({
     if (!newReminderData) {
       return;
     }
-
     updateReminder(newReminderData);
     set((state) => ({
       reminders: state.reminders.map((reminder) =>

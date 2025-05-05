@@ -11,6 +11,7 @@ export default function CreateReminderForm() {
   const { createReminder } = useReminder();
   const form = useRef();
   const title = useRef();
+  const description = useRef();
   const time = useRef();
   const date = useRef();
 
@@ -18,7 +19,8 @@ export default function CreateReminderForm() {
     e.preventDefault();
     const { success } = createReminder(e);
     if (success) {
-      form.current.reset();
+      description.current.value = "";
+      title.current.value = "";
     }
   };
 
@@ -36,7 +38,7 @@ export default function CreateReminderForm() {
     <Main>
       <Form ref={form} onSubmit={handleSubmit}>
         <Fieldset title={"Title"} ref={title} name="title" />
-        <Fieldset title={"Description"} name="description" />
+        <Fieldset title={"Description"} ref={description} name="description" />
         <Section>
           <Fieldset title={"Time"} ref={time} type="time" name="time" />
           <Fieldset title={"Date"} ref={date} type="date" name="date" />
