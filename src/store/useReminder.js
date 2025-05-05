@@ -73,15 +73,24 @@ const useReminder = create((set, get) => ({
     set({ reminders: data });
   },
   updateReminder: (newReminderData) => {
-    if (!newReminderData) {
-      return;
-    }
-    updateReminder(newReminderData);
-    set((state) => ({
-      reminders: state.reminders.map((reminder) =>
+    if (!newReminderData) return;
+
+    updateReminder(newReminderData); // Assumes this is some external updater (API, etc.)
+
+    set((state) => {
+      const updatedReminders = state.reminders.map((reminder) =>
         reminder.id === newReminderData.id ? newReminderData : reminder
-      ),
-    }));
+      );
+
+      const updatedTimeouted = state.timeOutedReminder.map((reminder) =>
+        reminder.id === newReminderData.id ? newReminderData : reminder
+      );
+
+      return {
+        reminders: updatedReminders,
+        timeOutedReminder: updatedTimeouted,
+      };
+    });
 
     toast.success("Reminder has been successfully updated.");
   },
