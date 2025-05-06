@@ -9,6 +9,8 @@ import Buttons from "./Buttons.jsx";
 import formUtil from "../../utils/formUtil.js";
 import useReminder from "../../store/useReminder.js";
 import { toast } from "sonner";
+import successSoundFile from "../../assets/sound/created.mp3";
+import cancelSoundFile from "../../assets/sound/cancel.mp3";
 
 const Modal = function Modal() {
   const {
@@ -41,6 +43,10 @@ const Modal = function Modal() {
       };
       updateReminder(updatedData);
       toggleUpdateModal();
+
+      // Play sound.
+      const updateSound = new Audio(successSoundFile);
+      updateSound.play();
     } catch (error) {
       console.log("Encountered and error while updating the reminder!", error);
     }
@@ -48,6 +54,10 @@ const Modal = function Modal() {
 
   const handleCloseDialog = () => {
     toggleUpdateModal();
+
+    // Cancel Sound
+    const cancelSFX = new Audio(cancelSoundFile);
+    cancelSFX.play();
   };
 
   return createPortal(

@@ -6,6 +6,7 @@ import Layout from "./Layout.jsx";
 import Homepage from "./pages/HomePage.jsx";
 import CreateReminderPage from "./pages/CreateReminderPage.jsx";
 import RemindersPage from "./pages/RemindersPage.jsx";
+import ErrorPage from "./pages/ErrorPage.jsx";
 
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
@@ -13,6 +14,7 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <Layout />,
+    errorElement: <ErrorPage />,
     children: [
       {
         index: true,

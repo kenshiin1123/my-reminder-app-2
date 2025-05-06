@@ -6,11 +6,19 @@ import ExitButton from "./ExitButton";
 import { AnimatePresence } from "framer-motion";
 import useReminder from "../../../store/useReminder";
 import { useContext } from "react";
+import deleteSoundFile from "../../../assets/sound/delete.mp3";
 
 export default function Index({ showOptions, toggleShowOption }) {
   const { toggleUpdateModal, deleteReminder, selectReminderById } =
     useReminder();
   const { id } = useContext(ReminderContext);
+
+  const handleDelete = () => {
+    const deleteSFX = new Audio(deleteSoundFile);
+    deleteSFX.play();
+    deleteReminder(id);
+  };
+
   return (
     <AnimatePresence>
       {showOptions ? (
@@ -25,7 +33,7 @@ export default function Index({ showOptions, toggleShowOption }) {
             >
               Edit
             </Button>
-            <Button onClick={() => deleteReminder(id)}>Delete</Button>
+            <Button onClick={handleDelete}>Delete</Button>
           </ButtonsSection>
           <ExitButton toggleShowOption={toggleShowOption} />
         </Container>

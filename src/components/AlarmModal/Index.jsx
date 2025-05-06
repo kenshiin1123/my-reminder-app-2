@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import { format } from "date-fns";
 import Background from "./Background";
 import TimeOutedReminders from "./TimeOutedReminders";
+import notifySFXFile from "../../assets/sound/notify.wav";
 
 export default function AlarmModal() {
   const {
@@ -30,6 +31,8 @@ export default function AlarmModal() {
         // #2 Turn on the alarm.
         if (modifiedDateTime === now && !reminder.isActive && !showAlarm) {
           addTimeOutedReminder(reminder);
+          const notifySFX = new Audio(notifySFXFile);
+          notifySFX.play();
           turnOnAlarm();
         }
       });
