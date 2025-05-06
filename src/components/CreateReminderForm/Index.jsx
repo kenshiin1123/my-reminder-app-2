@@ -6,6 +6,7 @@ import Button from "./Button.jsx";
 import { useRef, useEffect } from "react";
 import useReminder from "../../store/useReminder.js";
 import { format } from "date-fns";
+import createdSFX from "../../assets/sound/created.mp3";
 
 export default function CreateReminderForm() {
   const { createReminder } = useReminder();
@@ -19,6 +20,8 @@ export default function CreateReminderForm() {
     e.preventDefault();
     const { success } = createReminder(e);
     if (success) {
+      const submitSound = new Audio(createdSFX);
+      submitSound.play();
       description.current.value = "";
       title.current.value = "";
     }
