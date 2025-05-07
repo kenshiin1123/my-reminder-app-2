@@ -2,6 +2,7 @@ import React from "react";
 import Header from "../components/Header.jsx";
 import Clock from "../components/Clock/Index";
 import { FaCircleInfo } from "react-icons/fa6";
+import { Link } from "react-router";
 export default function Homepage() {
   return (
     <>
@@ -12,12 +13,18 @@ export default function Homepage() {
           <FaCircleInfo /> Saved locally. Log in to sync.
         </p>
         <div className="flex gap-10">
-          <button className="px-3 py-2 w-20 h-10 shadow shadow-gray-600 rounded active:scale-97  text-black">
+          <Link
+            to={"/register"}
+            className="px-3 py-2 w-20 h-10 shadow shadow-gray-600 rounded active:scale-97  text-black text-center"
+          >
             Register
-          </button>
-          <button className="px-3 py-2 w-20 h-10 shadow shadow-gray-600 rounded active:scale-97 bg-black text-white">
+          </Link>
+          <Link
+            to={"/login"}
+            className="px-3 py-2 w-20 h-10 shadow shadow-gray-600 rounded active:scale-97 bg-black text-white text-center"
+          >
             LOGIN
-          </button>
+          </Link>
         </div>
       </div>
     </>
