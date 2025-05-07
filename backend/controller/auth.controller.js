@@ -44,13 +44,14 @@ const login = async (req, res) => {
 
   const { email, password } = req.body;
 
-  const user = await User.findOne({ email }); // Added `await` to properly fetch the user
+  const user = await User.findOne({ email });
+
   if (!user) {
     return res.status(400).json({ message: "User not found!", success: false });
   }
 
   // Check if password is correct.
-  const isMatch = await bcrypt.compare(password, user.passwordHash); // Corrected `user.password` to `user.passwordHash`
+  const isMatch = await bcrypt.compare(password, user.passwordHash);
   if (!isMatch) {
     return res
       .status(400)
@@ -59,8 +60,12 @@ const login = async (req, res) => {
 
   // Generate Tokens
   const accessToken = generateAccessToken(user);
-  const refreshToken = generateRefreshToken(user);
+  const refreshToken = {
+    token: generateRefreshToken(user),
+    expiresAt: new Date(Date.now() + 3 * 30 * 24 * 60 * 60 * 1000), // Expires in 3 months (approx. 90 days)
+  };
 
+  // Push the created refresh token in user data
   user.refreshTokens.push(refreshToken);
   await user.save();
 
@@ -71,9 +76,41 @@ const login = async (req, res) => {
     maxAge: 7 * 24 * 60 * 60 * 1000,
   });
 
-  return res.res
+  return res
     .status(200)
     .json({ accessToken, message: "Logged in successfully", success: true });
 };
 
-export { register, login };
+const refresh = async (req, res) => {
+  const refreshToken = req.cookies.refreshToken;
+  if (!refreshToken) return res.sendStatus(401);
+
+  const user = await User.findOne({ refreshTokens: refreshToken });
+  if (!user) return res.sendStatus(403);
+
+  jwt.verify(
+    refreshToken,
+    process.env.JWT_REFRESH_SECRET,
+    async (err, decoded) => {
+      if (err) return res.sendStatus(403);
+
+      // Optional: rotate token
+      user.refreshTokens = user.refreshTokens.filter((t) => t !== refreshToken);
+      const newRefresh = generateRefreshToken(user);
+      user.refreshTokens.push(newRefresh);
+      await user.save();
+
+      res.cookie("refreshToken", newRefresh, {
+        httpOnly: true,
+        secure: true,
+        sameSite: "Strict",
+        maxAge: 7 * 24 * 60 * 60 * 1000,
+      });
+
+      const newAccess = generateAccessToken(user);
+      res.json({ accessToken: newAccess });
+    }
+  );
+};
+
+export { register, login, refresh };

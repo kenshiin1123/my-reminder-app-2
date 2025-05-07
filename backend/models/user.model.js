@@ -23,7 +23,10 @@ const userSchema = new Schema({
   refreshTokens: [
     {
       token: String,
-      expiresAt: Date,
+      expiresAt: {
+        type: Date,
+        required: true,
+      },
     },
   ],
   reminders: [{ type: Schema.Types.ObjectId, ref: "Reminder" }],
