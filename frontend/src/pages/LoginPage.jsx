@@ -3,6 +3,7 @@ import Main from "../components/CreateReminderForm/Main";
 import Form from "../components/CreateReminderForm/Form";
 import Fieldset from "../components/CreateReminderForm/Fieldset";
 import Button from "../components/CreateReminderForm/Button";
+import Header from "../components/CreateReminderForm/Header";
 import { toast } from "sonner";
 export default function LoginPage() {
   const email = useRef();
@@ -20,7 +21,7 @@ export default function LoginPage() {
   return (
     <Main>
       <Form onSubmit={handleSubmit}>
-        <h1 className="text-center text-4xl">Welcome Back</h1>
+        <Header>Access Your Account</Header>
         <Fieldset ref={email} name={"email"} title={"Email"} type="email" />
         <Fieldset
           ref={password}

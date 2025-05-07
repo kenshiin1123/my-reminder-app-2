@@ -23,7 +23,7 @@ export default function Homepage() {
             to={"/login"}
             className="px-3 py-2 w-20 h-10 shadow shadow-gray-600 rounded active:scale-97 bg-black text-white text-center"
           >
-            LOGIN
+            Login
           </Link>
         </div>
       </div>

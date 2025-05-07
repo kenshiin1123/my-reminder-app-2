@@ -3,6 +3,7 @@ import Form from "./Form.jsx";
 import Fieldset from "./Fieldset.jsx";
 import Section from "./Section.jsx";
 import Button from "./Button.jsx";
+import Header from "./Header.jsx";
 import { useRef, useEffect } from "react";
 import useReminder from "../../store/useReminder.js";
 import { format } from "date-fns";
@@ -40,6 +41,7 @@ export default function CreateReminderForm() {
   return (
     <Main>
       <Form ref={form} onSubmit={handleSubmit}>
+        <Header>New Reminder</Header>
         <Fieldset title={"Title"} ref={title} name="title" />
         <Fieldset title={"Description"} ref={description} name="description" />
         <Section>
