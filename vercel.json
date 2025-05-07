@@ -1,0 +1,7 @@
+{
+  "git": {
+    "deploymentEnabled": {
+      "feature/add-user-account": false
+    }
+  }
+}
