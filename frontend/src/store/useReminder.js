@@ -9,6 +9,7 @@ import {
 } from "../utils/reminder";
 
 const useReminder = create((set, get) => ({
+  showUpdateModal: false,
   showAlarm: false,
   reminders: getReminders(),
   timeOutedReminder: [],
@@ -49,7 +50,6 @@ const useReminder = create((set, get) => ({
       selectedReminder: state.reminders.find((reminder) => reminder.id === id),
     }));
   },
-  showUpdateModal: false,
   toggleUpdateModal: () => {
     // Toggle the update reminder modal, on or off.
     set((state) => ({

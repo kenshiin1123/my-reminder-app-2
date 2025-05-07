@@ -7,6 +7,8 @@ import Homepage from "./pages/HomePage.jsx";
 import CreateReminderPage from "./pages/CreateReminderPage.jsx";
 import RemindersPage from "./pages/RemindersPage.jsx";
 import ErrorPage from "./pages/ErrorPage.jsx";
+import RegisterPage from "./pages/RegisterPage.jsx";
+import LoginPage from "./pages/LoginPage.jsx";
 
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
@@ -27,6 +29,14 @@ const router = createBrowserRouter([
       {
         path: "create-reminder",
         element: <CreateReminderPage />,
+      },
+      {
+        path: "register",
+        element: <RegisterPage />,
+      },
+      {
+        path: "login",
+        element: <LoginPage />,
       },
     ],
   },

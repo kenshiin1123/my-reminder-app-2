@@ -11,7 +11,7 @@ export default function Layout() {
       <Outlet />
       <Toaster richColors />
       <AlarmModal />
-      <Analytics />
+      {/* <Analytics /> */}
     </>
   );
 }
