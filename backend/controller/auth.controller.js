@@ -1,5 +1,6 @@
 import bcrypt from "bcrypt";
 import User from "../models/user.model.js";
+import { generateAccessToken, generateRefreshToken } from "../utils/token.js";
 
 const hashPassword = async (password) => {
   const salt = await bcrypt.genSalt();
@@ -38,24 +39,41 @@ const login = async (req, res) => {
   if (!req.body || !req.body.email || !req.body.password) {
     return res
       .status(400)
-      .json({ message: "Email and password is required!", success: true });
+      .json({ message: "Email and password are required!", success: false });
   }
 
   const { email, password } = req.body;
 
-  const user = User.findOne({ email });
-  const badResponse = res
-    .status(400)
-    .json({ message: "User not found!", success: false });
-
-  // Check if user is available
-  if (!user) badResponse;
+  const user = await User.findOne({ email }); // Added `await` to properly fetch the user
+  if (!user) {
+    return res.status(400).json({ message: "User not found!", success: false });
+  }
 
   // Check if password is correct.
-  const isMatch = await bcrypt.compare(password, user.password);
-  if (!isMatch) badResponse;
+  const isMatch = await bcrypt.compare(password, user.passwordHash); // Corrected `user.password` to `user.passwordHash`
+  if (!isMatch) {
+    return res
+      .status(400)
+      .json({ message: "Invalid password!", success: false });
+  }
 
-  res.status(200).json({ message: "Logged in successfully", success: true });
+  // Generate Tokens
+  const accessToken = generateAccessToken(user);
+  const refreshToken = generateRefreshToken(user);
+
+  user.refreshTokens.push(refreshToken);
+  await user.save();
+
+  res.cookie("refreshToken", refreshToken, {
+    httpOnly: true,
+    secure: true,
+    sameSite: "Strict",
+    maxAge: 7 * 24 * 60 * 60 * 1000,
+  });
+
+  return res.res
+    .status(200)
+    .json({ accessToken, message: "Logged in successfully", success: true });
 };
 
 export { register, login };
