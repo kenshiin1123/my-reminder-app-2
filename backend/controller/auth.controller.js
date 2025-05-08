@@ -1,6 +1,9 @@
 import bcrypt from "bcrypt";
 import User from "../models/user.model.js";
+import jwt from "jsonwebtoken";
 import { generateAccessToken, generateRefreshToken } from "../utils/token.js";
+import dotenv from "dotenv";
+dotenv.config();
 
 const hashPassword = async (password) => {
   const salt = await bcrypt.genSalt();
@@ -30,6 +33,8 @@ const register = async (req, res) => {
     const passwordHash = await hashPassword(password);
     const newUser = new User({ username, email, passwordHash });
     await newUser.save();
+
+    console.log(email, username, password);
 
     res.status(201).json({
       message: "User registered successfully",
@@ -120,4 +125,17 @@ const refresh = async (req, res) => {
   );
 };
 
-export { register, login, refresh };
+const verifyAccessToken = (req, res, next) => {
+  const authHeader = req.headers.authorization;
+  const token = authHeader && authHeader.split(" ")[1]; // Bearer <token>
+
+  if (!token) return res.sendStatus(401); // Unauthorized
+
+  jwt.verify(token, process.env.JWT_ACCESS_SECRET, (err, decoded) => {
+    if (err) return res.sendStatus(403); // Forbidden
+
+    req.user = decoded; // Store payload for route use
+    next();
+  });
+};
+export { register, login, refresh, verifyAccessToken };

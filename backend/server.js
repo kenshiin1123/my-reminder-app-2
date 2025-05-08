@@ -8,6 +8,7 @@ const PORT = process.env.PORT || 5000;
 
 // Routes
 import authRoutes from "./routes/auth.routes.js"; // Authentication Route
+import userRoutes from "./routes/user.routes.js"; // User Route
 
 app.use(
   cors({
@@ -23,6 +24,7 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/auth", authRoutes);
+app.use("/api/users", userRoutes);
 
 app.listen(PORT, () => {
   console.log("Listening to port", PORT);

@@ -15,6 +15,10 @@ const reminderSchema = new Schema({
     required: true,
     trim: true,
   },
+  isActive: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 export default model("Reminder", reminderSchema);
