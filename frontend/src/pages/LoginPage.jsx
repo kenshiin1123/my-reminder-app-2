@@ -5,17 +5,27 @@ import Fieldset from "../components/CreateReminderForm/Fieldset";
 import Button from "../components/CreateReminderForm/Button";
 import Header from "../components/CreateReminderForm/Header";
 import { toast } from "sonner";
+
+import { login } from "../api/auth.api";
+
 export default function LoginPage() {
   const email = useRef();
   const password = useRef();
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     if (!email.current.value || !password.current.value) {
       return toast.error("Email and Password is required!");
     }
 
-    toast.success("Logged in successfully!");
+    const { message, success } = await login(
+      email.current.value,
+      password.current.value
+    );
+    if (!success) {
+      return toast.error(message);
+    }
+    toast.success(message);
   };
 
   return (

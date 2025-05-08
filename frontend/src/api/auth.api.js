@@ -1,8 +1,7 @@
-const API_ROOT = "http://localhost:5000";
-const API_ORIGIN = "/api/auth";
-const LOGIN_API = `${API_ROOT}${API_ORIGIN}/login`;
-const REGISTER_API = `${API_ROOT}${API_ORIGIN}/register`;
-const REFRESH_API = `${API_ROOT}${API_ORIGIN}/refresh`;
+const API_BASE_URL = "http://localhost:5000/api/auth";
+const LOGIN_API = `${API_BASE_URL}/login`;
+const REGISTER_API = `${API_BASE_URL}/register`;
+const REFRESH_API = `${API_BASE_URL}/refresh`;
 
 const login = async (email, password) => {
   if (!email || !password)
@@ -53,17 +52,12 @@ const register = async (username, email, password) => {
 
   const data = await res.json();
 
-  if (!res.ok) {
-    return {
-      message: data.message || "Registration failed",
-      success: false,
-    };
-  }
+  const { message, success, name } = data;
 
   return {
-    message: "Registration successful",
-    success: true,
-    data,
+    message,
+    success,
+    name,
   };
 };
 

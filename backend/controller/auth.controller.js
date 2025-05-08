@@ -17,22 +17,31 @@ const register = async (req, res) => {
 
   const { email, username, password } = req.body;
 
-  const existingUser = await User.findOne({ $or: [{ email }, { username }] });
+  try {
+    const existingUser = await User.findOne({ $or: [{ email }, { username }] });
 
-  if (existingUser) {
-    return res.status(409).json({
-      message: "Email or username already in use.",
-      success: false,
+    if (existingUser) {
+      return res.status(409).json({
+        message: "Email or username already in use.",
+        success: false,
+      });
+    }
+
+    const passwordHash = await hashPassword(password);
+    const newUser = new User({ username, email, passwordHash });
+    await newUser.save();
+
+    res.status(201).json({
+      message: "User registered successfully",
+      success: true,
+      name: username,
     });
+  } catch (error) {
+    console.error("Encountered an error while registering:", error);
+    res
+      .status(500)
+      .json({ message: `Internal Server Error: ${error}`, success: false });
   }
-
-  const passwordHash = await hashPassword(password);
-  const newUser = new User({ username, email, passwordHash });
-  await newUser.save();
-
-  res
-    .status(201)
-    .json({ message: "User registered successfully", success: true });
 };
 
 const login = async (req, res) => {
@@ -53,9 +62,7 @@ const login = async (req, res) => {
   // Check if password is correct.
   const isMatch = await bcrypt.compare(password, user.passwordHash);
   if (!isMatch) {
-    return res
-      .status(400)
-      .json({ message: "Invalid password!", success: false });
+    return res.status(400).json({ message: "User not found!", success: false });
   }
 
   // Generate Tokens
