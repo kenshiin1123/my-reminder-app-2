@@ -10,8 +10,8 @@ import {
 
 router
   .route("")
-  .post(getReminders)
-  .addReminder(addReminder)
+  .get(getReminders)
+  .post(addReminder)
   .put(updateReminder)
   .delete(deleteReminder);
 
