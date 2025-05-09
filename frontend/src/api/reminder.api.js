@@ -13,17 +13,14 @@ const REMINDER_API_ENDPOINT = "http://localhost:5000/api/reminders";
  * @property {Array} data- An array of reminders if the operation was successful.
  * @throws {Error} If an unexpected error occurs during the fetch operation.
  */
-const getUserReminders = async (userId) => {
-  if (!userId) {
-    return { message: "User ID is required", success: false };
-  }
+const getUserReminders = async () => {
   try {
     const response = await secureFetch(REMINDER_API_ENDPOINT, {
-      method: "POST",
+      method: "GET",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
-      body: JSON.stringify({ id: userId }),
     });
 
     if (!response.ok) {

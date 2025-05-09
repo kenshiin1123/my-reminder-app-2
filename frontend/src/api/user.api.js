@@ -14,28 +14,18 @@ const USER_API_ENDPOINT = "http://localhost:5000/api/users";
  * @throws {Error} If there is a network or server error during the fetch operation.
  */
 
-const getUserData = async (userId) => {
-  if (!userId) {
-    return { message: "User ID is required!", success: false };
-  }
+const getUserData = async () => {
   try {
-    const response = await secureFetch(USER_API_ENDPOINT, {
-      method: "POST",
+    const response = await secureFetch(`${USER_API_ENDPOINT}`, {
+      method: "GET", // GET request to retrieve user data
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`, // Include token for authentication
       },
-      body: JSON.stringify({ id: userId }),
     });
 
-    if (!response.ok) {
-      const errorText = await response.text();
-      return {
-        message: `Failed to retrieve user: ${response.status} - ${errorText}`,
-        success: false,
-      };
-    }
-
-    return await response.json();
+    const data = await response.json();
+    return data; // Contains user data if successful
   } catch (error) {
     console.error("Error retrieving user:", error.message);
     return {

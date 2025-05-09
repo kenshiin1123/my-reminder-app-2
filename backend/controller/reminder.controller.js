@@ -3,7 +3,7 @@ import Reminder from "../models/reminder.model.js";
 
 const getReminders = async (req, res) => {
   try {
-    const { id } = req.body;
+    const id = req.user.id;
 
     if (!id) {
       return res.status(400).json({

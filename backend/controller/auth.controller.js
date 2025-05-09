@@ -129,12 +129,27 @@ const verifyAccessToken = (req, res, next) => {
   const authHeader = req.headers.authorization;
   const token = authHeader && authHeader.split(" ")[1]; // Bearer <token>
 
-  if (!token) return res.sendStatus(401); // Unauthorized
+  // Check if no token is provided
+  if (!token) {
+    return res.status(401).json({ message: "Access token is required" }); // Unauthorized
+  }
 
   jwt.verify(token, process.env.JWT_ACCESS_SECRET, (err, decoded) => {
-    if (err) return res.sendStatus(403); // Forbidden
+    // If there's a token verification error (e.g., expired token)
+    if (err) {
+      const errorMessage =
+        err.name === "TokenExpiredError"
+          ? "Token has expired"
+          : "Invalid token";
 
-    req.user = decoded; // Store payload for route use
+      console.error(`Token verification error: ${errorMessage}`); // Log the error
+      return res.status(403).json({ message: errorMessage }); // Forbidden
+    }
+
+    // Store the decoded token payload in the request object
+    req.user = decoded; // Add decoded data to req.user
+
+    // Call next() to continue to the next middleware or route handler
     next();
   });
 };

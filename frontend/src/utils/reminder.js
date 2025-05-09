@@ -5,9 +5,7 @@ const setReminder = (updatedReminders) =>
   localStorage.setItem("reminders", JSON.stringify(updatedReminders));
 
 const getReminders = () => {
-  // If logged in, get reminders from database
   const data = JSON.parse(localStorage.getItem("reminders")) || [];
-  // console.log(data);
   return data;
 };
 
