@@ -3,17 +3,12 @@ import Reminder from "../models/reminder.model.js";
 import bcrypt from "bcrypt";
 
 const getUser = async (req, res) => {
-  const { id } = req.body;
-
-  if (!id) {
-    return res.status(400).json({
-      message: "Cannot find user, no ID provided",
-      success: false,
-    });
-  }
+  const userId = req.user.id;
 
   try {
-    const user = await User.findById(id).select("-passwordHash -refreshTokens");
+    const user = await User.findById(userId).select(
+      "-passwordHash -refreshTokens"
+    );
 
     if (!user) {
       return res.status(404).json({
@@ -23,14 +18,14 @@ const getUser = async (req, res) => {
     }
 
     return res.status(200).json({
-      message: "Successfully found user data",
+      message: "User data fetched successfully",
       success: true,
       data: user,
     });
   } catch (error) {
-    console.error("Error retrieving user:", error.message);
+    console.error("Get user error:", error.message);
     return res.status(500).json({
-      message: "Server error while retrieving user",
+      message: "Server error",
       success: false,
     });
   }

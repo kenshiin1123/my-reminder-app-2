@@ -7,6 +7,6 @@ import {
   deleteUser,
 } from "../controller/user.controller.js";
 
-router.route("").post(getUser).put(updateUser).delete(deleteUser);
+router.route("").get(getUser).put(updateUser).delete(deleteUser);
 
 export default router;
