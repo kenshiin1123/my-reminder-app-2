@@ -3,17 +3,23 @@ import dotenv from "dotenv";
 import cors from "cors";
 import connectDB from "./config/db.config.js";
 import { verifyAccessToken } from "./controller/auth.controller.js";
+
 dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 5000;
-
 // Routes
 import authRoutes from "./routes/auth.routes.js"; // Authentication Route
 import userRoutes from "./routes/user.routes.js"; // User Route
 import reminderRoutes from "./routes/reminder.routes.js"; // Reminder Route
 
 // Middlewares
-app.use(cors());
+app.use(
+  cors({
+    origin: ["http://localhost:5173", "https://my-reminder-app-2.vercel.app/"],
+    credentials: true,
+  })
+);
+
 app.use(express.json());
 
 app.get("/", (req, res) => {
