@@ -13,13 +13,7 @@ import userRoutes from "./routes/user.routes.js"; // User Route
 import reminderRoutes from "./routes/reminder.routes.js"; // Reminder Route
 
 // Middlewares
-app.use(
-  cors({
-    origin: [process.env.FRONTEND_ORIGIN],
-    methods: ["GET", "POST", "PUT", "DELETE"],
-    credentials: true,
-  })
-);
+app.use(cors());
 app.use(express.json());
 
 app.get("/", (req, res) => {
