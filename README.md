@@ -1,28 +1,40 @@
-# Reminder App 2
+# 🛎️ Reminder App 2
 
-Welcome to **Reminder App 2** – a modern evolution of the original Reminder Tracker App! This enhanced version is built with a fresh tech stack focused on performance, responsiveness, and scalability. It's your go-to tool for managing tasks and staying on top of deadlines with a clean and dynamic user experience.
+Welcome to **Reminder App 2** – a full-stack upgrade of the original Reminder Tracker App! This version introduces a powerful backend, real-time reminder management, and secure user authentication using JWTs. Built for performance and scalability, this app helps you stay productive while keeping your data secure.
 
-🖥️ **Live Demo**  
-Check out the live version here: [Reminder App 2](https://my-reminder-app-2.vercel.app/)
+🖥️ **Live Demo**
+Check it out here: [Reminder App 2](https://my-reminder-app-2.vercel.app/)
 
 ---
 
 ## 📑 Features
 
-- ⏳ **Live Countdown Timer**: Each reminder card shows a real-time countdown until the due date.
-- 🕒 **Current Time Display**: The current time is always visible to help you stay synced.
-- 📝 **Reminder Management**: Add, edit, complete, or delete reminders effortlessly.
-- 🔄 **Dynamic Sorting**: New reminders appear at the top; completed tasks shift to the bottom (coming soon!).
-- 💾 **Persistent State**: All reminders are stored using `localStorage`, so nothing gets lost on refresh.
-- 🧠 **Global State Management**: State is efficiently managed with Zustand.
-- 🎨 **Smooth Animations**: Framer Motion delivers subtle animations for a polished UI.
-- 🔔 **To-Do**: Alarm sound notification when the timer expires (coming soon!).
+### ✅ **Frontend**
+
+- ⏳ **Live Countdown Timer**: See exactly how much time remains for each reminder.
+- 🕒 **Real-Time Clock**: Keep track of the current time to stay in sync.
+- 📝 **Reminder Management**: Create, edit, and delete reminders with ease.
+- 🔁 **Dynamic Sorting**: Prioritize upcoming tasks; completed reminders move down (coming soon!).
+- 💾 **Persistent State**: Reminders are stored in the backend, not just in localStorage.
+- 🧠 **Global State Management**: Efficiently handled via Zustand.
+- 🎨 **Smooth Animations**: Framer Motion enhances the user experience with fluid transitions.
+
+### 🔐 **Backend**
+
+- 🗂️ **User Authentication**: Register and log in securely with JWT-based authentication.
+- 🔄 **Access & Refresh Tokens**: Robust token-based session management ensures both security and convenience.
+- 🛠️ **REST API**: Backend exposes routes for users and reminders (CRUD operations).
+- 🌐 **MongoDB Integration**: All data is stored in a MongoDB database via Mongoose.
+- 🧱 **Scalable Server Setup**: Built with Express.js and designed for modularity and future growth.
 
 ---
 
-## 🚀 Tech Stack
+## 🏗️ Tech Stack
 
-- **Frontend**: React + Tailwind CSS
+### Frontend
+
+- **Framework**: React
+- **Styling**: Tailwind CSS
 - **State Management**: Zustand
 - **Routing**: React Router
 - **Notifications**: Sonner
@@ -31,37 +43,42 @@ Check out the live version here: [Reminder App 2](https://my-reminder-app-2.verc
 - **Build Tool**: Vite
 - **Deployment**: Vercel
 
+### Backend
+
+- **Runtime**: Node.js
+- **Framework**: Express.js
+- **Database**: MongoDB with Mongoose
+- **Authentication**: JWT (access + refresh token flow)
+- **Security**: Token validation, refresh strategy, and secure route protection
+- **Deployment**: Render
+
 ---
 
 ## 📄 Usage Instructions
 
-1. **Add a New Reminder**: Enter the title, description, date, and time.
-2. **View Your Reminders**: Head to the main view to monitor active tasks.
-3. **Track Deadlines**: Watch the live countdown and current time for context.
-4. **Modify Tasks**: Use edit/delete actions to stay organized.
-5. **Future Feature**: Stay tuned for an alarm feature that notifies you when a reminder reaches zero.
+### Frontend
+
+1. **Register/Login**: Start by creating an account or logging in.
+2. **Manage Reminders**: Add, edit, and track reminders in real time.
+3. **Watch Countdown**: Monitor time left for each task.
+4. **Edit/Delete**: Modify reminders as needed.
+
+### Backend
+
+- `/api/auth`: Handles user registration, login, token refresh
+- `/api/reminders`: CRUD routes for managing user-specific reminders (protected)
 
 ---
 
 ## 🔙 Previous Version
 
-Want to see where it all began?  
-Check out the original version here: [Reminder Tracker App](https://my-reminder-app.vercel.app/)
-
----
-
-## 🧪 In Development
-
-This project is actively being improved. Upcoming features include:
-
-- 🔔 Alarm notification when countdown ends
-- 🎯 Smart reminders with recurring task support
-- 📱 Mobile-first UX enhancements
+Curious about where this project began?
+👉 [Reminder Tracker App](https://my-reminder-app.vercel.app/)
 
 ---
 
 ## 📬 Contact
 
-Have feedback or suggestions? I'd love to hear from you!
+Have questions, feedback, or ideas?
 
-**Email**: fernandezlanceivangil@gmail.com
+📧 **Email**: [fernandezlanceivangil@gmail.com](mailto:fernandezlanceivangil@gmail.com)
