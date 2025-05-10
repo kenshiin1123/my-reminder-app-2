@@ -38,10 +38,8 @@ const useReminder = create((set, get) => ({
     if (get().isLoggedIn) {
       const { data: onlineReminder } = await getUserReminders(); // get reminders from database
       data = onlineReminder;
-      console.log(data);
     } else {
       data = await getReminders(); // get reminders from localStorage
-      console.log(data);
     }
     set({ reminders: data });
   },
@@ -82,20 +80,15 @@ const useReminder = create((set, get) => ({
     set(() => ({ reminders: getReminders() }));
   },
   selectReminderById: (id) => {
-    if (get().isLoggedIn) {
-      set((state) => ({
-        selectedReminder: state.reminders.find(
-          (reminder) => reminder._id === id
-        ),
-      }));
-    } else {
-      set((state) => ({
-        selectedReminder: state.reminders.find(
-          (reminder) => reminder.id === id
-        ),
-      }));
-    }
+    set((state) => {
+      const key = state.isLoggedIn ? "_id" : "id";
+      const selectedReminder = state.reminders.find(
+        (reminder) => reminder[key] === id
+      );
+      return { selectedReminder };
+    });
   },
+
   toggleUpdateModal: () => {
     // Toggle the update reminder modal, on or off.
     set((state) => ({
@@ -128,7 +121,7 @@ const useReminder = create((set, get) => ({
       // Save reminders locally
       createReminder(newReminder);
     }
-    console.log("New reminder created!", newReminder);
+    // console.log("New reminder created!", newReminder);
     set((state) => ({ reminders: [newReminder, ...state.reminders] }));
     toast.success("Reminder has been created");
     return { success: true };
@@ -168,32 +161,65 @@ const useReminder = create((set, get) => ({
   deleteReminder: (reminderID) => {
     if (get().isLoggedIn) {
       const deleteAsync = async () => {
-        console.log(reminderID);
+        // console.log(reminderID);
         await deleteOnlineReminder(reminderID);
       };
       deleteAsync();
+
+      set((state) => ({
+        reminders: state.reminders.filter(
+          (reminder) => reminder._id !== reminderID
+        ),
+      }));
     } else {
       deleteReminder(reminderID);
+
+      set((state) => ({
+        reminders: state.reminders.filter(
+          (reminder) => reminder.id !== reminderID
+        ),
+      }));
     }
 
-    set((state) => ({
-      reminders: state.reminders.filter(
-        (reminder) => reminder.id !== reminderID
-      ),
-    }));
     toast.success("Reminder successfully deleted.");
   },
   toggleReminderCheckbox: (id) => {
-    toggleReminder(id);
-    set((state) => ({
-      reminders: state.reminders.map((reminder) => {
-        if (reminder.id === id) {
-          return { ...reminder, isActive: !reminder.isActive };
-        } else {
-          return reminder;
+    if (get().isLoggedIn) {
+      const reminder = get().reminders.find((reminder) => reminder._id === id);
+      if (!reminder) return;
+
+      const newReminder = { ...reminder, isActive: !reminder.isActive };
+
+      (async () => {
+        try {
+          await updateOnlineReminder(newReminder);
+        } catch (error) {
+          console.error("Failed to update reminder:", error);
         }
-      }),
-    }));
+      })();
+
+      set((state) => ({
+        reminders: state.reminders.map((reminder) => {
+          if (reminder._id === id) {
+            return { ...reminder, isActive: !reminder.isActive };
+          } else {
+            return reminder;
+          }
+        }),
+      }));
+    } else {
+      toggleReminder(id);
+
+      set((state) => ({
+        reminders: state.reminders.map((reminder) => {
+          if (reminder.id === id) {
+            return { ...reminder, isActive: !reminder.isActive };
+          } else {
+            return reminder;
+          }
+        }),
+      }));
+    }
   },
 }));
 

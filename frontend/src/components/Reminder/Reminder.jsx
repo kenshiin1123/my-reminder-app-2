@@ -9,21 +9,30 @@ import ReminderOption from "./ReminderOption/Index.jsx";
 
 // Context
 import ReminderContext from "./ReminderContext.jsx";
-
+import useReminder from "../../store/useReminder.js";
 function Reminder({ ...props }) {
   const reminder = { ...props };
   const [showOptions, setShowOptions] = useState(false);
+  const { isLoggedIn } = useReminder();
 
   // Toggles the option display, whether on or off.
   const toggleShowOption = () => {
     setShowOptions((prev) => !prev);
   };
 
-  const contextValue = {
+  let contextValue = {
     ...reminder,
-    id: reminder._id,
     toggleShowOption,
   };
+
+  if (isLoggedIn) {
+    contextValue = {
+      ...reminder,
+      id: reminder._id,
+      toggleShowOption,
+    };
+  }
+
   return (
     <ReminderContext.Provider value={contextValue}>
       <ReminderContainer reminder={reminder}>

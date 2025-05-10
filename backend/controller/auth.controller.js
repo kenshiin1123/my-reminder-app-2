@@ -143,7 +143,7 @@ const verifyAccessToken = (req, res, next) => {
           : "Invalid token";
 
       console.error(`Token verification error: ${errorMessage}`); // Log the error
-      return res.status(403).json({ message: errorMessage }); // Forbidden
+      return res.json({ message: errorMessage }); // Forbidden
     }
 
     // Store the decoded token payload in the request object

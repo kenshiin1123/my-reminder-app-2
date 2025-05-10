@@ -5,7 +5,7 @@ import NoRemindersFoundDisplay from "./NoRemindersFoundDisplay.jsx";
 import Loading from "./Loading.jsx";
 import { useEffect } from "react";
 export default function Reminders() {
-  const { reminders, verifyIsloggedIn, fetchReminders, loading, isLoggedIn } =
+  const { reminders, verifyIsloggedIn, fetchReminders, loading } =
     useReminder();
 
   useEffect(() => {
@@ -21,12 +21,7 @@ export default function Reminders() {
       {!loading &&
         reminders &&
         reminders.map((reminder) => {
-          return (
-            <Reminder
-              key={isLoggedIn ? reminder.id : reminder.id}
-              {...reminder}
-            />
-          );
+          return <Reminder key={reminder.id} {...reminder} />;
         })}
       {reminders.length < 1 && <NoRemindersFoundDisplay />}
     </AnimatePresence>

@@ -73,7 +73,7 @@ const refreshToken = async () => {
     if (!res.ok) {
       throw new Error(data.message || "Refresh failed");
     }
-
+    console.log(data);
     localStorage.setItem("accessToken", data.accessToken);
     return data.accessToken;
   } catch (err) {
