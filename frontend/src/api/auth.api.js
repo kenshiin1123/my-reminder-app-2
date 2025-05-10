@@ -1,8 +1,8 @@
-const API_BASE_URL = "http://localhost:5000/api/auth";
-const LOGIN_API = `${API_BASE_URL}/login`;
-const REGISTER_API = `${API_BASE_URL}/register`;
-const REFRESH_API = `${API_BASE_URL}/refresh`;
-const LOGOUT_API = `${API_BASE_URL}/logout`;
+const { VITE_AUTH_API_ENDPOINT } = import.meta.env || {};
+const LOGIN_API = `${VITE_AUTH_API_ENDPOINT}/login`;
+const REGISTER_API = `${VITE_AUTH_API_ENDPOINT}/register`;
+const REFRESH_API = `${VITE_AUTH_API_ENDPOINT}/refresh`;
+const LOGOUT_API = `${VITE_AUTH_API_ENDPOINT}/logout`;
 
 const login = async (email, password) => {
   if (!email || !password)

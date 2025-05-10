@@ -1,6 +1,6 @@
 import { secureFetch } from "./auth.api";
 
-const USER_API_ENDPOINT = "http://localhost:5000/api/users";
+const { VITE_USER_API_ENDPOINT } = import.meta.env || {};
 
 /**
  * Retrieves user data from the server based on the provided user ID.
@@ -16,7 +16,7 @@ const USER_API_ENDPOINT = "http://localhost:5000/api/users";
 
 const getUserData = async () => {
   try {
-    const response = await secureFetch(`${USER_API_ENDPOINT}`, {
+    const response = await secureFetch(`${VITE_USER_API_ENDPOINT}`, {
       method: "GET", // GET request to retrieve user data
       headers: {
         "Content-Type": "application/json",
@@ -56,7 +56,7 @@ const updateUser = async (userId, newUserData) => {
   }
 
   try {
-    const response = await secureFetch(USER_API_ENDPOINT, {
+    const response = await secureFetch(VITE_USER_API_ENDPOINT, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -95,7 +95,7 @@ const deleteUser = async (userId) => {
     return { message: "User ID is required!", success: false };
   }
   try {
-    const response = await secureFetch(USER_API_ENDPOINT, {
+    const response = await secureFetch(VITE_USER_API_ENDPOINT, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",

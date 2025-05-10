@@ -1,5 +1,5 @@
 import { secureFetch } from "./auth.api";
-const REMINDER_API_ENDPOINT = "http://localhost:5000/api/reminders";
+const { VITE_REMINDER_API_ENDPOINT } = import.meta.env || {};
 
 /**
  * Fetches reminders for a specific user by their user ID.
@@ -15,7 +15,7 @@ const REMINDER_API_ENDPOINT = "http://localhost:5000/api/reminders";
  */
 const getUserReminders = async () => {
   try {
-    const response = await secureFetch(REMINDER_API_ENDPOINT, {
+    const response = await secureFetch(VITE_REMINDER_API_ENDPOINT, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -56,7 +56,7 @@ const addReminder = async (newReminder) => {
   }
 
   try {
-    const response = await secureFetch(REMINDER_API_ENDPOINT, {
+    const response = await secureFetch(VITE_REMINDER_API_ENDPOINT, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -99,7 +99,7 @@ const updateReminder = async (updatedReminder) => {
   }
 
   try {
-    const response = await secureFetch(REMINDER_API_ENDPOINT, {
+    const response = await secureFetch(VITE_REMINDER_API_ENDPOINT, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -142,7 +142,7 @@ const deleteReminder = async (reminderId) => {
   }
 
   try {
-    const response = await secureFetch(REMINDER_API_ENDPOINT, {
+    const response = await secureFetch(VITE_REMINDER_API_ENDPOINT, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",

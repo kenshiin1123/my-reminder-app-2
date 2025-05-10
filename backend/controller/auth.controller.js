@@ -179,8 +179,9 @@ const verifyAccessToken = (req, res, next) => {
 
   jwt.verify(token, process.env.JWT_ACCESS_SECRET, (err, decoded) => {
     if (err) {
-      const status = err.name === "TokenExpiredError" ? 401 : 403;
-      return res.status(status).json({ message: msg });
+      // const status = err.name === "TokenExpiredError" ? 401 : 403;
+      // return res.status(status).json({ message: "TokenExpiredError" });
+      return res.json({ message: "TokenExpiredError" });
     }
 
     req.user = decoded;
