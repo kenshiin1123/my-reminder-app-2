@@ -84,7 +84,7 @@ const login = async (req, res) => {
   res.cookie("refreshToken", refreshToken, {
     httpOnly: true,
     secure: true,
-    sameSite: "Strict",
+    sameSite: "None",
     maxAge: 7 * 24 * 60 * 60 * 1000,
   });
 
@@ -114,7 +114,7 @@ const logoutUser = async (req, res) => {
     // Clear the cookie
     res.clearCookie("refreshToken", {
       httpOnly: true,
-      sameSite: "Lax",
+      sameSite: "None",
       secure: process.env.NODE_ENV === "production",
     });
 
@@ -155,7 +155,7 @@ const refresh = async (req, res) => {
         res.cookie("refreshToken", newRefresh, {
           httpOnly: true,
           secure: process.env.NODE_ENV === "production",
-          sameSite: "Strict",
+          sameSite: "None",
           maxAge: 7 * 24 * 60 * 60 * 1000,
         });
 
@@ -179,12 +179,8 @@ const verifyAccessToken = (req, res, next) => {
 
   jwt.verify(token, process.env.JWT_ACCESS_SECRET, (err, decoded) => {
     if (err) {
-      const errorMessage =
-        err.name === "TokenExpiredError"
-          ? "Access token expired"
-          : "Invalid access token";
-
-      return res.json({ message: errorMessage });
+      const status = err.name === "TokenExpiredError" ? 401 : 403;
+      return res.status(status).json({ message: msg });
     }
 
     req.user = decoded;

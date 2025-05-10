@@ -1,7 +1,11 @@
 import mongoose from "mongoose";
+import dotenv from "dotenv";
+dotenv.config();
+
+const MONGO_URI = process.env.MONGO_URI;
 
 const connectDB = () => {
-  mongoose.connect("mongodb://127.0.0.1:27017/reminder-app-2");
+  mongoose.connect(MONGO_URI);
   mongoose.connection.on("error", console.error.bind("Connection Error"));
   mongoose.connection.once("open", () => {
     console.log("Mongodb Connected!");
