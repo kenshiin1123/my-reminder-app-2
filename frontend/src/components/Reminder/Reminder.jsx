@@ -21,9 +21,9 @@ function Reminder({ ...props }) {
 
   const contextValue = {
     ...reminder,
+    id: reminder._id,
     toggleShowOption,
   };
-
   return (
     <ReminderContext.Provider value={contextValue}>
       <ReminderContainer reminder={reminder}>

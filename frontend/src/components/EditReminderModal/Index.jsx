@@ -30,6 +30,7 @@ const Modal = function Modal() {
     e.preventDefault();
     try {
       const data = formUtil(e);
+
       const { title, description, date, time } = data;
       if (!title || !date || !time) {
         toast.error("Please input the required fields!");

@@ -26,6 +26,7 @@ export default function Index({ showOptions, toggleShowOption }) {
           <ButtonsSection>
             <Button
               onClick={() => {
+                console.log(id);
                 selectReminderById(id);
                 toggleUpdateModal();
                 toggleShowOption();

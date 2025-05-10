@@ -1,6 +1,3 @@
-import formUtil from "./formUtil";
-import { v4 } from "uuid";
-
 const setReminder = (updatedReminders) =>
   localStorage.setItem("reminders", JSON.stringify(updatedReminders));
 
@@ -9,17 +6,7 @@ const getReminders = () => {
   return data;
 };
 
-const createReminder = (e) => {
-  let newReminder = formUtil(e);
-  const newID = v4();
-  newReminder = {
-    title: newReminder.title,
-    description: newReminder.description || "",
-    datetime: `${newReminder.date}T${newReminder.time}`,
-    isActive: false,
-    id: newID,
-  };
-
+const createReminder = (newReminder) => {
   if (newReminder.title && newReminder.datetime) {
     try {
       const reminders = JSON.parse(localStorage.getItem("reminders")) || [];

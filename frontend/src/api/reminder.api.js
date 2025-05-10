@@ -44,16 +44,15 @@ const getUserReminders = async () => {
  *
  * @async
  * @function addReminder
- * @param {string} userId - The ID of the user for whom the reminder is being added.
  * @param {Object} newReminder - The reminder object containing the details of the reminder.
  * @returns {Promise<Object>} A promise that resolves to an object containing the result of the operation.
  * @property {string} message - A message indicating the result of the operation.
  * @property {boolean} success - A boolean indicating whether the operation was successful.
  * @throws {Error} If an error occurs during the fetch operation.
  */
-const addReminder = async (userId, newReminder) => {
-  if (!userId || !newReminder) {
-    return { message: "User ID and new reminder is required!", success: false };
+const addReminder = async (newReminder) => {
+  if (!newReminder) {
+    return { message: "New reminder is required!", success: false };
   }
 
   try {
@@ -61,8 +60,9 @@ const addReminder = async (userId, newReminder) => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
-      body: JSON.stringify({ id: userId, reminder: newReminder }),
+      body: JSON.stringify({ reminder: newReminder }),
     });
 
     if (!response.ok) {
@@ -86,15 +86,14 @@ const addReminder = async (userId, newReminder) => {
  *
  * @async
  * @function updateReminder
- * @param {string} userId - The ID of the user whose reminder is being updated.
  * @param {Object} updatedReminder - The updated reminder object.
  * @returns {Promise<Object>} A promise that resolves to an object containing the success status and a message or the updated reminder data.
  * @throws {Error} If an error occurs during the fetch operation.
  */
-const updateReminder = async (userId, updatedReminder) => {
-  if (!userId || !updatedReminder) {
+const updateReminder = async (updatedReminder) => {
+  if (!updatedReminder) {
     return {
-      message: "User ID and updated reminder is required!",
+      message: "Updated reminder is required!",
       success: false,
     };
   }
@@ -104,8 +103,9 @@ const updateReminder = async (userId, updatedReminder) => {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
-      body: JSON.stringify({ id: userId, reminder: updatedReminder }),
+      body: JSON.stringify({ reminder: updatedReminder }),
     });
 
     if (!response.ok) {
@@ -136,9 +136,9 @@ const updateReminder = async (userId, updatedReminder) => {
  * - `success` {boolean}: A boolean indicating whether the operation was successful.
  * @throws {Error} If an error occurs during the fetch operation.
  */
-const deleteReminder = async (userId, reminderId) => {
-  if (!userId || !reminderId) {
-    return { message: "User ID and reminder ID is required", success: false };
+const deleteReminder = async (reminderId) => {
+  if (!reminderId) {
+    return { message: "Reminder ID is required", success: false };
   }
 
   try {
@@ -146,8 +146,9 @@ const deleteReminder = async (userId, reminderId) => {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
-      body: JSON.stringify({ userId, reminderId }),
+      body: JSON.stringify({ reminderId }),
     });
 
     if (!response.ok) {

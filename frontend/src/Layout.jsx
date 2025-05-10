@@ -7,18 +7,12 @@ import useReminder from "./store/useReminder";
 import { useEffect } from "react";
 
 export default function Layout() {
-  const { verifyIsloggedIn, fetchReminders } = useReminder();
+  const { verifyIsloggedIn } = useReminder();
   const location = useLocation();
 
   useEffect(() => {
-    const init = async () => {
-      const loggedIn = await verifyIsloggedIn(); // should return a boolean
-      if (loggedIn) {
-        await fetchReminders();
-      }
-    };
-    init();
-  }, [location, fetchReminders, verifyIsloggedIn]);
+    verifyIsloggedIn();
+  }, [location, verifyIsloggedIn]);
 
   return (
     <>

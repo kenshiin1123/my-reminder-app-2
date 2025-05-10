@@ -41,7 +41,8 @@ const getReminders = async (req, res) => {
 
 const addReminder = async (req, res) => {
   try {
-    const { id, reminder } = req.body;
+    const id = req.user.id;
+    const { reminder } = req.body;
 
     if (!id || !reminder) {
       return res.status(400).json({
@@ -87,7 +88,11 @@ const addReminder = async (req, res) => {
 
 const updateReminder = async (req, res) => {
   try {
-    const { id, reminder } = req.body;
+    const id = req.user.id;
+    const { reminder } = req.body;
+
+    console.log(id, reminder);
+
     if (!id || !reminder) {
       return res
         .status(400)
@@ -96,7 +101,7 @@ const updateReminder = async (req, res) => {
 
     const { title, description, datetime, _id, isActive } = reminder;
 
-    if (!title || !description || !datetime || !_id || isActive === undefined) {
+    if (!title || !datetime || !_id || isActive === undefined) {
       return res.status(400).json({
         message:
           "Title, description, datetime, _id, and isActive in the updated reminder are required.",
@@ -135,7 +140,8 @@ const updateReminder = async (req, res) => {
 
 const deleteReminder = async (req, res) => {
   try {
-    const { userId, reminderId } = req.body;
+    const userId = req.user.id;
+    const { reminderId } = req.body;
 
     if (!userId || !reminderId) {
       return res.status(400).json({

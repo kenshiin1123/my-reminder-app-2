@@ -9,8 +9,17 @@ import {
 } from "../utils/reminder";
 
 import { getUserData } from "../api/user.api";
+import {
+  addReminder,
+  getUserReminders,
+  updateReminder as updateOnlineReminder,
+  deleteReminder as deleteOnlineReminder,
+} from "../api/reminder.api";
+import formUtil from "../utils/formUtil";
+import { v4 } from "uuid";
 
 const useReminder = create((set, get) => ({
+  loading: false,
   isLoggedIn: false,
   showUpdateModal: false,
   showAlarm: false,
@@ -24,28 +33,28 @@ const useReminder = create((set, get) => ({
     id: "",
   },
   fetchReminders: async () => {
-    const { isLoggedIn } = get();
-    console.log(isLoggedIn);
-    if (!isLoggedIn) {
-      // Assuming getReminders() is a fallback function (like from localStorage)
-      const localReminders = getReminders?.() || [];
-      set({ reminders: localReminders });
-      return;
-    }
+    let data = [];
 
-    try {
-      const { data } = await getUserData();
+    if (get().isLoggedIn) {
+      const { data: onlineReminder } = await getUserReminders(); // get reminders from database
+      data = onlineReminder;
       console.log(data);
-      set({ reminders: data || [] });
-    } catch (error) {
-      console.error("Failed to fetch reminders:", error);
-      set({ reminders: [] }); // Optional: reset to empty
+    } else {
+      data = await getReminders(); // get reminders from localStorage
+      console.log(data);
     }
+    set({ reminders: data });
   },
-
   verifyIsloggedIn: async () => {
+    set({ loading: true });
+
     const data = await getUserData();
-    set(() => ({ isLoggedIn: data.success || false })); // if there's no success available, it must be false
+    const isLoggedIn = data.success || false;
+
+    set(() => ({ isLoggedIn }));
+
+    await get().fetchReminders();
+    set({ loading: false });
   },
   addTimeOutedReminder: (timeOutedReminder) => {
     set((state) => ({
@@ -73,9 +82,19 @@ const useReminder = create((set, get) => ({
     set(() => ({ reminders: getReminders() }));
   },
   selectReminderById: (id) => {
-    set((state) => ({
-      selectedReminder: state.reminders.find((reminder) => reminder.id === id),
-    }));
+    if (get().isLoggedIn) {
+      set((state) => ({
+        selectedReminder: state.reminders.find(
+          (reminder) => reminder._id === id
+        ),
+      }));
+    } else {
+      set((state) => ({
+        selectedReminder: state.reminders.find(
+          (reminder) => reminder.id === id
+        ),
+      }));
+    }
   },
   toggleUpdateModal: () => {
     // Toggle the update reminder modal, on or off.
@@ -84,25 +103,50 @@ const useReminder = create((set, get) => ({
     }));
   },
   createReminder: (event) => {
-    const data = createReminder(event);
-    const { newReminder } = data;
+    let newReminder = formUtil(event);
+    const newID = v4();
+    newReminder = {
+      title: newReminder.title,
+      description: newReminder.description || "",
+      datetime: `${newReminder.date}T${newReminder.time}`,
+      isActive: false,
+      id: newID,
+    };
+
     if (!newReminder) {
       toast.error("Please input the required fields!");
       return { success: false };
+    }
+
+    if (get().isLoggedIn) {
+      // Save reminders in database
+      const saveInDatabase = async () => {
+        await addReminder(newReminder);
+      };
+      saveInDatabase();
+    } else {
+      // Save reminders locally
+      createReminder(newReminder);
     }
     console.log("New reminder created!", newReminder);
     set((state) => ({ reminders: [newReminder, ...state.reminders] }));
     toast.success("Reminder has been created");
     return { success: true };
   },
-  fetchReminders: async () => {
-    const data = await getReminders();
-    set({ reminders: data });
-  },
+
   updateReminder: (newReminderData) => {
     if (!newReminderData) return;
 
-    updateReminder(newReminderData); // Assumes this is some external updater (API, etc.)
+    if (get().isLoggedIn) {
+      const asyncUpdateReminder = async () => {
+        await updateOnlineReminder(newReminderData);
+      };
+      // For database update
+      asyncUpdateReminder();
+    } else {
+      // For localStorage update
+      updateReminder(newReminderData);
+    }
 
     set((state) => {
       const updatedReminders = state.reminders.map((reminder) =>
@@ -122,7 +166,16 @@ const useReminder = create((set, get) => ({
     toast.success("Reminder has been successfully updated.");
   },
   deleteReminder: (reminderID) => {
-    deleteReminder(reminderID);
+    if (get().isLoggedIn) {
+      const deleteAsync = async () => {
+        console.log(reminderID);
+        await deleteOnlineReminder(reminderID);
+      };
+      deleteAsync();
+    } else {
+      deleteReminder(reminderID);
+    }
+
     set((state) => ({
       reminders: state.reminders.filter(
         (reminder) => reminder.id !== reminderID
