@@ -116,4 +116,4 @@ const deleteUser = async (req, res) => {
   }
 };
 
-export { getUser, updateUser, deleteUser, logoutUser };
+export { getUser, updateUser, deleteUser };

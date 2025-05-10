@@ -5,10 +5,11 @@ import Fieldset from "../components/CreateReminderForm/Fieldset";
 import Button from "../components/CreateReminderForm/Button";
 import Header from "../components/CreateReminderForm/Header";
 import { toast } from "sonner";
-
+import { useNavigate } from "react-router";
 import { login } from "../api/auth.api";
 
 export default function LoginPage() {
+  const navigate = useNavigate();
   const email = useRef();
   const password = useRef();
 
@@ -26,6 +27,7 @@ export default function LoginPage() {
       return toast.error(message);
     }
     toast.success(message);
+    navigate("/reminders");
   };
 
   return (

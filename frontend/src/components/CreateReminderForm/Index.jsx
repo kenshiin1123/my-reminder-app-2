@@ -25,6 +25,7 @@ export default function CreateReminderForm() {
       submitSound.play();
       description.current.value = "";
       title.current.value = "";
+      title.current.focus();
     }
   };
 

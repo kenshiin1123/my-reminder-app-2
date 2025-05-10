@@ -93,53 +93,25 @@ const login = async (req, res) => {
     .json({ accessToken, message: "Logged in successfully", success: true });
 };
 
-const refresh = async (req, res) => {
-  const refreshToken = req.cookies.refreshToken;
-  if (!refreshToken) return res.sendStatus(401);
-
-  const user = await User.findOne({ refreshTokens: refreshToken });
-  if (!user) return res.sendStatus(403);
-
-  jwt.verify(
-    refreshToken,
-    process.env.JWT_REFRESH_SECRET,
-    async (err, decoded) => {
-      if (err) return res.sendStatus(403);
-
-      // Optional: rotate token
-      user.refreshTokens = user.refreshTokens.filter((t) => t !== refreshToken);
-      const newRefresh = generateRefreshToken(user);
-      user.refreshTokens.push(newRefresh);
-      await user.save();
-
-      res.cookie("refreshToken", newRefresh, {
-        httpOnly: true,
-        secure: true,
-        sameSite: "Strict",
-        maxAge: 7 * 24 * 60 * 60 * 1000,
-      });
-
-      const newAccess = generateAccessToken(user);
-      res.json({ accessToken: newAccess });
-    }
-  );
-};
-
 const logoutUser = async (req, res) => {
-  const refreshToken = req.cookies.refreshToken;
-  const id = req.user.id;
+  const refreshToken = req.cookies?.refreshToken;
+  const userId = req.user?.id;
+
+  // If no token in cookies, there's nothing to revoke
   if (!refreshToken) return res.sendStatus(204);
 
   try {
-    const user = await User.findOne({ _id: id });
+    const user = await User.findById(userId);
 
     if (user) {
+      // Filter out the used refresh token
       user.refreshTokens = user.refreshTokens.filter(
         (token) => token !== refreshToken
       );
       await user.save();
     }
 
+    // Clear the cookie
     res.clearCookie("refreshToken", {
       httpOnly: true,
       sameSite: "Lax",
@@ -153,32 +125,71 @@ const logoutUser = async (req, res) => {
   }
 };
 
+const refresh = async (req, res) => {
+  const refreshToken = req.cookies.refreshToken;
+  if (!refreshToken)
+    return res.status(401).json({ message: "No refresh token provided" });
+
+  try {
+    const user = await User.findOne({ refreshTokens: refreshToken });
+    if (!user)
+      return res.status(403).json({ message: "Refresh token not found" });
+
+    jwt.verify(
+      refreshToken,
+      process.env.JWT_REFRESH_SECRET,
+      async (err, decoded) => {
+        if (err)
+          return res
+            .status(403)
+            .json({ message: "Invalid or expired refresh token" });
+
+        // Optional rotation
+        user.refreshTokens = user.refreshTokens.filter(
+          (t) => t !== refreshToken
+        );
+        const newRefresh = generateRefreshToken(user);
+        user.refreshTokens.push(newRefresh);
+        await user.save();
+
+        res.cookie("refreshToken", newRefresh, {
+          httpOnly: true,
+          secure: process.env.NODE_ENV === "production",
+          sameSite: "Strict",
+          maxAge: 7 * 24 * 60 * 60 * 1000,
+        });
+
+        const newAccess = generateAccessToken(user);
+        res.json({ accessToken: newAccess });
+      }
+    );
+  } catch (error) {
+    console.error("Refresh error:", error.message);
+    res.status(500).json({ message: "Server error during refresh" });
+  }
+};
+
 const verifyAccessToken = (req, res, next) => {
   const authHeader = req.headers.authorization;
-  const token = authHeader && authHeader.split(" ")[1]; // Bearer <token>
+  const token = authHeader && authHeader.split(" ")[1];
 
-  // Check if no token is provided
   if (!token) {
-    return res.status(401).json({ message: "Access token is required" }); // Unauthorized
+    return res.status(401).json({ message: "Access token is required" });
   }
 
   jwt.verify(token, process.env.JWT_ACCESS_SECRET, (err, decoded) => {
-    // If there's a token verification error (e.g., expired token)
     if (err) {
       const errorMessage =
         err.name === "TokenExpiredError"
-          ? "Token has expired"
-          : "Invalid token";
+          ? "Access token expired"
+          : "Invalid access token";
 
-      console.error(`Token verification error: ${errorMessage}`); // Log the error
-      return res.json({ message: errorMessage }); // Forbidden
+      return res.json({ message: errorMessage });
     }
 
-    // Store the decoded token payload in the request object
-    req.user = decoded; // Add decoded data to req.user
-
-    // Call next() to continue to the next middleware or route handler
+    req.user = decoded;
     next();
   });
 };
+
 export { register, login, refresh, verifyAccessToken, logoutUser };

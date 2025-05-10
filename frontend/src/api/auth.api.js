@@ -2,6 +2,7 @@ const API_BASE_URL = "http://localhost:5000/api/auth";
 const LOGIN_API = `${API_BASE_URL}/login`;
 const REGISTER_API = `${API_BASE_URL}/register`;
 const REFRESH_API = `${API_BASE_URL}/refresh`;
+const LOGOUT_API = `${API_BASE_URL}/logout`;
 
 const login = async (email, password) => {
   if (!email || !password)
@@ -82,6 +83,29 @@ const refreshToken = async () => {
   }
 };
 
+const logout = async () => {
+  try {
+    const response = await fetch(LOGOUT_API, {
+      method: "POST",
+      credentials: "include", // Ensure cookies (like refreshToken) are sent
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+      },
+    });
+
+    if (response.ok) {
+      // Optional: Clear tokens, user state, and redirect
+      localStorage.removeItem("accessToken");
+    } else {
+      const error = await response.json();
+      console.error("Logout failed:", error.message);
+    }
+  } catch (err) {
+    console.error("Logout error:", err.message);
+  }
+};
+
 const secureFetch = async (url, options = {}, retry = true) => {
   const accessToken = localStorage.getItem("accessToken");
 
@@ -97,6 +121,7 @@ const secureFetch = async (url, options = {}, retry = true) => {
 
   if (res.status === 401 && retry) {
     const newAccessToken = await refreshToken();
+    localStorage.setItem("accessToken", newAccessToken);
     if (!newAccessToken) return res;
 
     // Retry the request once with new token
@@ -106,4 +131,4 @@ const secureFetch = async (url, options = {}, retry = true) => {
   return res;
 };
 
-export { login, register, refreshToken, secureFetch };
+export { login, register, refreshToken, secureFetch, logout };

@@ -1,4 +1,3 @@
-import React from "react";
 import useReminder from "../../store/useReminder";
 import Button from "./Button";
 import Description from "./Description";

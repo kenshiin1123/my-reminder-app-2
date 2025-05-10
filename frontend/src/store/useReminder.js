@@ -98,15 +98,26 @@ const useReminder = create((set, get) => ({
   createReminder: (event) => {
     let newReminder = formUtil(event);
     const newID = v4();
-    newReminder = {
-      title: newReminder.title,
-      description: newReminder.description || "",
-      datetime: `${newReminder.date}T${newReminder.time}`,
-      isActive: false,
-      id: newID,
-    };
 
-    if (!newReminder) {
+    if (get().isLoggedIn) {
+      newReminder = {
+        title: newReminder.title,
+        description: newReminder.description || "",
+        datetime: `${newReminder.date}T${newReminder.time}`,
+        isActive: false,
+        _id: newID,
+      };
+    } else {
+      newReminder = {
+        title: newReminder.title,
+        description: newReminder.description || "",
+        datetime: `${newReminder.date}T${newReminder.time}`,
+        isActive: false,
+        id: newID,
+      };
+    }
+
+    if (!newReminder.title || !newReminder.datetime) {
       toast.error("Please input the required fields!");
       return { success: false };
     }
@@ -126,7 +137,6 @@ const useReminder = create((set, get) => ({
     toast.success("Reminder has been created");
     return { success: true };
   },
-
   updateReminder: (newReminderData) => {
     if (!newReminderData) return;
 
