@@ -125,6 +125,34 @@ const refresh = async (req, res) => {
   );
 };
 
+const logoutUser = async (req, res) => {
+  const refreshToken = req.cookies.refreshToken;
+  const id = req.user.id;
+  if (!refreshToken) return res.sendStatus(204);
+
+  try {
+    const user = await User.findOne({ _id: id });
+
+    if (user) {
+      user.refreshTokens = user.refreshTokens.filter(
+        (token) => token !== refreshToken
+      );
+      await user.save();
+    }
+
+    res.clearCookie("refreshToken", {
+      httpOnly: true,
+      sameSite: "Lax",
+      secure: process.env.NODE_ENV === "production",
+    });
+
+    return res.status(200).json({ message: "Logged out successfully" });
+  } catch (err) {
+    console.error("Logout error:", err.message);
+    return res.status(500).json({ message: "Logout failed" });
+  }
+};
+
 const verifyAccessToken = (req, res, next) => {
   const authHeader = req.headers.authorization;
   const token = authHeader && authHeader.split(" ")[1]; // Bearer <token>
@@ -153,4 +181,4 @@ const verifyAccessToken = (req, res, next) => {
     next();
   });
 };
-export { register, login, refresh, verifyAccessToken };
+export { register, login, refresh, verifyAccessToken, logoutUser };
