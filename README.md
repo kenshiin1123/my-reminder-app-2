@@ -14,7 +14,6 @@ Check it out here: [Reminder App 2](https://my-reminder-app-2.vercel.app/)
 - ⏳ **Live Countdown Timer**: See exactly how much time remains for each reminder.
 - 🕒 **Real-Time Clock**: Keep track of the current time to stay in sync.
 - 📝 **Reminder Management**: Create, edit, and delete reminders with ease.
-- 🔁 **Dynamic Sorting**: Prioritize upcoming tasks; completed reminders move down (coming soon!).
 - 💾 **Persistent State**: Reminders are stored in the backend, not just in localStorage.
 - 🧠 **Global State Management**: Efficiently handled via Zustand.
 - 🎨 **Smooth Animations**: Framer Motion enhances the user experience with fluid transitions.
@@ -62,11 +61,6 @@ Check it out here: [Reminder App 2](https://my-reminder-app-2.vercel.app/)
 2. **Manage Reminders**: Add, edit, and track reminders in real time.
 3. **Watch Countdown**: Monitor time left for each task.
 4. **Edit/Delete**: Modify reminders as needed.
-
-### Backend
-
-- `/api/auth`: Handles user registration, login, token refresh
-- `/api/reminders`: CRUD routes for managing user-specific reminders (protected)
 
 ---
 
