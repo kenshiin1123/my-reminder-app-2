@@ -13,7 +13,7 @@ const generateAccessToken = (user) => {
 
 const generateRefreshToken = (user) => {
   return jwt.sign({ id: user._id }, JWT_REFRESH_SECRET, {
-    expiresIn: "7d",
+    expiresIn: "30d",
   });
 };
 

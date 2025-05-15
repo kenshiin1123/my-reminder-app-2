@@ -61,11 +61,19 @@ const useReminder = create((set, get) => ({
   },
   removeTimeOutedReminder: (id) => {
     get().toggleReminderCheckbox(id);
-    set((state) => ({
-      timeOutedReminder: state.timeOutedReminder.filter(
-        (reminder) => reminder.id !== id
-      ),
-    }));
+    if (!get().isLoggedIn) {
+      set((state) => ({
+        timeOutedReminder: state.timeOutedReminder.filter(
+          (reminder) => reminder.id !== id
+        ),
+      }));
+    } else {
+      set((state) => ({
+        timeOutedReminder: state.timeOutedReminder.filter(
+          (reminder) => reminder._id !== id
+        ),
+      }));
+    }
     if (get().timeOutedReminder == 0) {
       get().turnOffAlarm();
     }

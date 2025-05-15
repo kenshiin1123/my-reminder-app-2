@@ -1,4 +1,5 @@
 import express from "express";
+import { verifyAccessToken } from "../controller/auth.controller.js";
 const router = express.Router();
 
 import {
@@ -7,6 +8,8 @@ import {
   updateReminder,
   deleteReminder,
 } from "../controller/reminder.controller.js";
+
+router.use(verifyAccessToken);
 
 router
   .route("")

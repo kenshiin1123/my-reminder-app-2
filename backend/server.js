@@ -16,7 +16,7 @@ import reminderRoutes from "./routes/reminder.routes.js"; // Reminder Route
 app.use(
   cors({
     allowedHeaders: ["Content-Type", "Authorization"],
-    origin: "https://my-reminder-app-2.vercel.app",
+    origin: ["http://localhost:5173", "https://my-reminder-app-2.vercel.app"],
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
   })
